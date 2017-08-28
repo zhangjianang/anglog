@@ -14,6 +14,12 @@
             <version>0.9.5.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>6.0.2</version>
+        </dependency>
+
         <!--Json array start -->
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -82,5 +88,13 @@
             <artifactId>mail</artifactId>
             <version>1.4.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>

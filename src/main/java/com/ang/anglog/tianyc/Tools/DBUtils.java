@@ -1,5 +1,9 @@
 package com.ang.anglog.tianyc.Tools;
 
+import com.ang.anglog.tianyc.insertrds.InsertRds;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +18,7 @@ import static com.ang.anglog.tianyc.Tools.StringUtil.isNotEmpty;
  */
 public class DBUtils {
 
-//    private final static Logger LOG = LoggerFactory.getLogger(DBUtils.class);
+    private  static Logger logger = LoggerFactory.getLogger(DBUtils.class);
 
     private static DataSource dataSource= null;
 
@@ -37,6 +41,7 @@ public class DBUtils {
             }
         }catch (Exception e){
             e.printStackTrace();
+            logger.error("创建数据库连接失败");
         }
     }
 
@@ -49,6 +54,7 @@ public class DBUtils {
             }
         }catch (Exception e){
             e.printStackTrace();
+            logger.error("创建insert数据库连接失败");
         }
 
     }
@@ -78,6 +84,7 @@ public class DBUtils {
             return lres;
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("创建查询数据库连接失败");
         } finally {
             SQLUtil.close(connection,querySql,rs);
         }
@@ -111,6 +118,7 @@ public class DBUtils {
             return lres;
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("创建查询数据库连接失败");
         } finally {
             SQLUtil.close(connection,querySql,rs);
         }
@@ -142,6 +150,7 @@ public class DBUtils {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("创建插入数据库连接失败");
         } finally {
             SQLUtil.close(connection,querySql,rs);
         }
@@ -197,11 +206,12 @@ public class DBUtils {
 
 
     /*批量插入*/
-    public void insertFinalBatch(Integer num, String sql ,Map<String, String> returnMap) {
+    public int insertFinalBatch(Integer num, String sql ,Map<String, String> returnMap) {
         Connection connection = null;
         PreparedStatement querySql = null;
         List<Map<String, Object>> lres=null;
         String json=null;
+        int res = 0;
         try {
             if(num==0) {
                 connection = insertDataSource.getConnection();
@@ -218,15 +228,21 @@ public class DBUtils {
                     querySql.setString(2,json);
                     querySql.addBatch();
                 }
-                querySql.executeBatch();
+                int[] ints = querySql.executeBatch();
+                for(int i=0;i<ints.length;i++) {
+                    if(ints[i]==1){
+                        res++;
+                    }
+                }
             }
 
         } catch (Exception e) {
             System.out.println(json);
             e.printStackTrace();
+            logger.error("批量插入数据库失败！");
         } finally {
             SQLUtil.close(connection,querySql,null);
         }
-
+        return res;
     }
 }

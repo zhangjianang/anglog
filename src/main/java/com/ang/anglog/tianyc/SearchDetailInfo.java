@@ -3,6 +3,9 @@ package com.ang.anglog.tianyc;
 import com.ang.anglog.tianyc.Tools.ReadPropertyTool;
 import com.ang.anglog.tianyc.Tools.StringUtil;
 import com.ang.anglog.tianyc.tycDao.*;
+import com.ang.anglog.tianyc.tycModel.CompanyManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.Map;
  * Created by adimn on 2017/5/22.
  */
 public class SearchDetailInfo {
+    private  static Logger logger = LoggerFactory.getLogger(SearchDetailInfo.class);
     private CompanyDao companyDao;
     private CompanyPunishDao punishDao;
     private CompanyChageInfoDao companyChageInfoDao;
@@ -55,7 +59,7 @@ public class SearchDetailInfo {
 
         if(fno!=null&&!"".equals(fno)){
             lno= Long.parseLong(fno);
-            this.splitnum= Integer.parseInt(fno);
+            splitnum= Integer.parseInt(fno);
         }
         if(companyId!=null&&!"".equals(companyId)) {
             Long clong = Long.parseLong(companyId);
@@ -69,7 +73,7 @@ public class SearchDetailInfo {
 
 
     /*根据companyId取*/
-    private void initByDaoByCompanyId(String companyId){
+    private Boolean initByDaoByCompanyId(String companyId){
         //确定取膜数量
         String no=getModeRes(companyId);
         if(!"".equals(no)) {
@@ -84,20 +88,11 @@ public class SearchDetailInfo {
             annualReprotDao = new AnnualReprotDao(no, true);
             mortgageInfoDao = new MortgageInfoDao(no, false);
             companyAbnormalDao = new CompanyAbnormalDao(no, false);
+            return true;
         }else{
             //如果为空，就设置为默认连接
-            companyDao=new CompanyDao();
-            punishDao=new CompanyPunishDao();
-            companyChageInfoDao=new CompanyChageInfoDao();
-            companyCheckInfoDao=new CompanyCheckInfoDao();
-            companyEquityDao=new CompanyEquityDao();
-            companyInvestorDao=new CompanyInvestorDao();
-            companyStaffDao=new CompanyStaffDao();
-            companyBranchDao=new CompanyBranchDao();
-
-            annualReprotDao=new AnnualReprotDao();
-            mortgageInfoDao=new MortgageInfoDao();
-            companyAbnormalDao=new CompanyAbnormalDao();
+            logger.error("根据id取模失败!!");
+            return false;
         }
     }
 
@@ -143,7 +138,10 @@ public class SearchDetailInfo {
         /*设置拆分信息*/
 
         try {
-            initByDaoByCompanyId(companyId);
+            Boolean isModOk = initByDaoByCompanyId(companyId);
+            if(!isModOk){
+                return null;
+            }
         } catch (Exception e) {
             System.out.println("SearchDetailInfo   initByDaoByCompanyId(companyId) : " + companyId);
             e.printStackTrace();

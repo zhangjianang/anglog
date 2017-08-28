@@ -18,18 +18,18 @@ public class CompanyChange {
     public String compareChange(CompanyChange cmp){
         StringBuilder sb=new StringBuilder("");
         if(!CompareTools.compareModelStrTime(this.createtime,cmp.createtime)){
-            sb.append("companyChangeInfo中,companyId:"+this.companyId+",id:"+this.id+",createTime不一致：local,"+CompareTools.getStrTime(this.createtime)+",api:"+cmp.createtime+"\r\n");
+            sb.append("companyChangeInfo中,companyId:"+this.companyId+",id:"+this.id+",createTime不一致：local,"+CompareTools.getStrTime(this.createtime)+",api:"+cmp.createtime);
         }
         if(!CompareTools.compareStringEqual(this.contentAfter,cmp.contentAfter)){
-            sb.append("companyChangeInfo中,companyId:"+this.companyId+",contentAfter不一致：local"+this.contentAfter+",api:"+cmp.contentAfter+"\r\n");
+            sb.append("companyChangeInfo中,companyId:"+this.companyId+",contentAfter不一致：local"+this.contentAfter+",api:"+cmp.contentAfter);
         }
         if(!CompareTools.compareStringEqual(this.contentBefore,cmp.contentBefore)){
-            sb.append("companyChangeInfo中,companyId:"+this.companyId+",contentBefore不一致：local"+this.contentBefore+",api:"+cmp.contentBefore+"\r\n");
+            sb.append("companyChangeInfo中,companyId:"+this.companyId+",contentBefore不一致：local"+this.contentBefore+",api:"+cmp.contentBefore);
         }
         if(!CompareTools.compareStringEqual(this.getChangeItem(),cmp.getChangeItem())){
-            sb.append("companyChangeInfo中,companyId:"+this.companyId+",changeItem不一致：local"+this.changeItem+",api:"+cmp.changeItem+"\r\n");
+            sb.append("companyChangeInfo中,companyId:"+this.companyId+",changeItem不一致：local"+this.changeItem+",api:"+cmp.changeItem);
         }
-        return sb.toString();
+        return sb.toString().replaceAll("(?m)^\\s*$(\\n|\\r\\n)", "");
     }
 
     @Override
@@ -103,11 +103,4 @@ public class CompanyChange {
         this.createtime = createtime;
     }
 
-//    public List<String> getCompanyName() {
-//        return companyName;
-//    }
-//
-//    public void setCompanyName(List<String> companyName) {
-//        this.companyName = companyName;
-//    }
 }

@@ -39,15 +39,16 @@ public class RdsDao {
         return dbUtils.getJsonInfoByPage(sql);
     }
 
-    public void insertBachIntoRds(Map<String, String> returnMap) {
-        String insertSQL = "REPLACE INTO companyinfo(name,json) values (?,?)";
-//        String insertSQL = "REPLACE INTO companyinfo_test(name,json) values (?,?)";
-        dbUtils.insertFinalBatch(0,insertSQL,returnMap);
+    public int insertBachIntoRds(Map<String, String> returnMap) {
+        int res=0;
+//        String insertSQL = "REPLACE INTO companyinfo(name,json) values (?,?)";
+        String insertSQL = "REPLACE INTO companyinfo_test(name,json) values (?,?)";
+        res = dbUtils.insertFinalBatch(0,insertSQL,returnMap);
 
         String add= ReadPropertyTool.getPropertyByParam("angsqldb.properties","insertAdd");
         if(add.equals("true")) {
             dbUtils.insertFinalBatch(2,insertSQL,returnMap);
         }
-
+        return res;
     }
 }

@@ -13,13 +13,13 @@ public class CompanyStaff {
         StringBuilder sb=new StringBuilder("");
         if(other!=null){
             if(!this.getName().equals(other.getName())){
-                sb.append("companyStaff name值不同,id:"+this.id+",name:"+this.name+",local："+name+",api:"+other.getName()+"\r\n");
+                sb.append("companyStaff中,name值不同,id:"+this.id+",name:"+this.name+",local："+name+",api:"+other.getName());
             }
             if(!this.typeJoin.equals(other.getTypeJoin())){
-                sb.append("companyStaff typeJoin值不同id:"+this.id+",name:"+this.name+",local:"+typeJoin+",api"+other.getTypeJoin()+"\r\n");
+                sb.append("companyStaff中,typeJoin值不同id:"+this.id+",name:"+this.name+",local:"+typeJoin+",api"+other.getTypeJoin());
             }
         }
-        return sb.toString();
+            return sb.toString().replaceAll("(?m)^\\s*$(\\n|\\r\\n)", "");
     }
 
     @Override

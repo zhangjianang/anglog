@@ -10,10 +10,13 @@ import com.ang.anglog.tianyc.Tools.JsonTools;
 import com.ang.anglog.tianyc.Tools.ReadPropertyTool;
 import com.ang.anglog.tianyc.Tools.StringUtil;
 
+import com.ang.anglog.tianyc.insertrds.InsertRds;
 import com.ang.anglog.tianyc.randomCheck.RandomCheck;
 import com.ang.anglog.tianyc.tycModel.company.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -32,15 +35,12 @@ public class CompanyManager {
         CompanyManager cm=new CompanyManager();
         cm.randomCompareData(filePath,maxLine,compareNum);
     }
+    private  static Logger logger = LoggerFactory.getLogger(CompanyManager.class);
 
     private Company local;
     private Company api;
 
-    private List<String> diffInfo;
 
-    public List<String> getDiffInfo() {
-        return diffInfo;
-    }
 
     public Boolean randomCompareData(String filePath, String maxLine, String compareNum){
         TreeSet<Integer> reset= RandomCheck.setDataset(maxLine,compareNum);
@@ -51,12 +51,28 @@ public class CompanyManager {
             return false;
         }
         System.out.println(companyIds);
+        List<CompareResModel> compareData = new ArrayList<CompareResModel>();
+        StringBuilder sb = new StringBuilder();
+
+        int notEqualNum = 0;
         for(int i=0;i<companyIds.size();i++){
+            CompareResModel diffModel = new CompareResModel();
             String companyId=companyIds.get(i).toString();
-            System.out.println("比较第"+i+"条,comanyId:"+companyId);
-            compareTwoByCompanyId(companyId);
+
+//            System.out.println("比较第"+i+"条,comanyId:"+companyId);
+            diffModel.setTitle("比较第"+i+"条,comanyId:"+companyId);
+
+            compareTwoByCompanyId(companyId,diffModel);
+            if(diffModel.getPerLine().size()>0){
+                notEqualNum++;
+            }else{
+                diffModel.setEqual(true);
+            }
+            compareData.add(diffModel);
             System.out.println();
         }
+        sb.append("\n对比总条数："+companyIds.size()+",不相等条数："+notEqualNum+"\n");
+        logger.error(sb+compareData.toString());
         return  true;
     }
 
@@ -69,9 +85,9 @@ public class CompanyManager {
             Gson gson = new Gson();
             java.lang.reflect.Type companyType = new TypeToken<Company>() {}.getType();
             System.out.println("api结果："+result);
-            this.api = gson.fromJson(result, companyType);
+            api = gson.fromJson(result, companyType);
         }else{
-            this.api=null;
+            api=null;
         }
     }
 
@@ -81,13 +97,13 @@ public class CompanyManager {
             Gson gson = new Gson();
             java.lang.reflect.Type companyType = new TypeToken<Company>() {}.getType();
             System.out.println("local结果:"+result);
-            this.local = gson.fromJson(result, companyType);
+            local = gson.fromJson(result, companyType);
         }else{
-            this.local=null;
+            local=null;
         }
     }
 
-    public void initAllByCompanyId(String companyId){
+    public void initAllByCompanyId(String companyId,CompareResModel diffModel){
        SearchDetailInfo searchDetailInfo=new SearchDetailInfo(0);
        Map<String,Object> local = searchDetailInfo.getSplitDetailInfoByCompanyId(companyId);
         initLocalData(local);
@@ -99,65 +115,71 @@ public class CompanyManager {
         }
     }
 
-    public void compareTwoByCompanyId(String companyId){
-        this.diffInfo=new ArrayList<String>();
-        initAllByCompanyId(companyId);
-        if(this.local!=null&&this.api!=null){
+    public void compareTwoByCompanyId(String companyId,CompareResModel diffModel){
+        List<String> diffInfo = diffModel.getPerLine();
+        initAllByCompanyId(companyId,diffModel);
+        if(local!=null&&api!=null){
 //            String companyId=local.getCompanyId();
 //            add("name");add("companyOrgType");/*industry*/add("legalPersonName");add("regCapital"); add("businessScope");add("regLocation");add("companyType");
 //            add("regInstitute");add("regStatus");
 
             if(!CompareTools.compareStringEqual(local.getActualCapital(),api.getActualCapital())){
-                diffInfo.add(companyId+",actualCapital 值不同,local:"+local.getActualCapital()+",api:"+api.getActualCapital());
+                diffInfo.add("actualCapital 值不同,local:"+local.getActualCapital()+",api:"+api.getActualCapital());
             }
             if(!CompareTools.compareStringEqual(local.getCompanyOrgType(),api.getCompanyOrgType())){
-                diffInfo.add(companyId+",companyOrgType 值不同,local:"+local.getCompanyOrgType()+",api:"+api.getCompanyOrgType());
+                diffInfo.add("companyOrgType 值不同,local:"+local.getCompanyOrgType()+",api:"+api.getCompanyOrgType());
             }
             if(!CompareTools.compareStringEqual(local.getName(),api.getName())){
-                diffInfo.add(companyId+",name 值不同,local:"+local.getName()+",api:"+api.getName());
+                diffInfo.add("name 值不同,local:"+local.getName()+",api:"+api.getName());
             }
             if(!CompareTools.compareStringEqual(local.getLegalPersonName(),api.getLegalPersonName())){
-                diffInfo.add(companyId+",legalPersonName 值不同,local:"+local.getLegalPersonName()+",api:"+api.getLegalPersonName());
+                diffInfo.add("legalPersonName 值不同,local:"+local.getLegalPersonName()+",api:"+api.getLegalPersonName());
             }
 
             if(!CompareTools.compareStringEqual(local.getRegCapital(),api.getRegCapital())){
-                diffInfo.add(companyId+",regCapital 值不同,local:"+local.getRegCapital()+",api:"+api.getRegCapital());
+                diffInfo.add("regCapital 值不同,local:"+local.getRegCapital()+",api:"+api.getRegCapital());
             }
             if(!CompareTools.compareStringEqual(local.getBusinessScope(),api.getBusinessScope())){
-                diffInfo.add(companyId+",businessScope 值不同,local:"+local.getBusinessScope()+",api:"+api.getBusinessScope());
+                diffInfo.add("businessScope 值不同,local:"+local.getBusinessScope()+",api:"+api.getBusinessScope());
             }
             if(!CompareTools.compareStringEqual(local.getRegLocation(),api.getRegLocation())){
-                diffInfo.add(companyId+",regLocation 值不同,local:"+local.getRegLocation()+",api:"+api.getRegLocation());
+                diffInfo.add("regLocation 值不同,local:"+local.getRegLocation()+",api:"+api.getRegLocation());
             }
             if(!CompareTools.compareStringEqual(local.getCompanyType(),api.getCompanyType())){
-                diffInfo.add(companyId+",companyType值不同,local:"+local.getCompanyType()+",api:"+api.getCompanyType());
+                diffInfo.add("companyType值不同,local:"+local.getCompanyType()+",api:"+api.getCompanyType());
             }
             if(!CompareTools.compareStringEqual(local.getRegInstitute(),api.getRegInstitute())){
-                diffInfo.add(companyId+",regInstitute值不同,local:"+local.getRegInstitute()+",api:"+api.getRegInstitute());
+                diffInfo.add("regInstitute值不同,local:"+local.getRegInstitute()+",api:"+api.getRegInstitute());
             }
             if(!CompareTools.compareStringEqual(local.getRegStatus(),api.getRegStatus())){
-                diffInfo.add(companyId+",regStatus值不同,local:"+local.getRegStatus()+",api:"+api.getRegStatus());
+                diffInfo.add("regStatus值不同,local:"+local.getRegStatus()+",api:"+api.getRegStatus());
             }
 
-//            if(!CompareTools.compareStringEqual(local.getIndustry(),api.getIndustry())){
-//                diffInfo.add(companyId+",industry值不同,local:"+local.getIndustry()+",api:"+api.getIndustry());
-//            }
+            if(!CompareTools.compareStringEqual(local.getIndustry(),api.getIndustry())){
+                diffInfo.add("industry值不同,local:"+local.getIndustry()+",api:"+api.getIndustry());
+            }
+            if(local.getAnnualReportList()!=null && api.getAnnualReportList()!=null) {
+                if (local.getAnnualReportList().size() != api.getAnnualReportList().size()) {
+                    diffInfo.add("annualReport 值不同");
+                }
+            }else if(local.getAnnualReportList()==null&&api.getAnnualReportList()==null){
 
-//            if(local.getAnnualReportList().size()!=api.getAnnualReportList().size()){
-//                diffInfo.add(companyId+",annualReport 值不同");
-//            }
+            }else {
+                if(local.getAnnualReportList()==null&&api.getAnnualReportList()!=null&&api.getAnnualReportList().size()==0){}
+                diffInfo.add("annualReport 值不同，local:"+local.getAnnualReportList()+",api:"+api.getAnnualReportList());
+            }
             //对比company相关List
-            this.compareInvestor(this.local.getInvestorListAll(),api.getInvestorListAll(),diffInfo,companyId);
-            this.compareCompanyStaff(this.local.getStaffListAll(),api.getStaffListAll(),diffInfo,companyId);
-            this.compareCompanyChange(this.local.getComChanInfoList(),api.getComChanInfoList(),diffInfo,companyId);
-            this.compareCompanyAbnormal(this.local.getComAbnoInfoList(),api.getComAbnoInfoList(),diffInfo,companyId);
+            compareInvestor(local.getInvestorListAll(),api.getInvestorListAll(),diffInfo,companyId);
+            compareCompanyStaff(local.getStaffListAll(),api.getStaffListAll(),diffInfo,companyId);
+            compareCompanyChange(local.getComChanInfoList(),api.getComChanInfoList(),diffInfo,companyId);
+            compareCompanyAbnormal(local.getComAbnoInfoList(),api.getComAbnoInfoList(),diffInfo,companyId);
 
-        }else if(this.local==null&&this.api!=null){
-            diffInfo.add(companyId+",local值为null");
-        }else if(this.api==null&&this.local!=null){
-            diffInfo.add(companyId+",api值为null");
+        }else if(local==null&&api!=null){
+            diffInfo.add("local中result值为null");
+        }else if(api==null&&local!=null){
+            diffInfo.add("api中result值为null");
         }
-        showDiffInfo();
+//        showDiffInfo(diffModel);
     }
 
 
@@ -165,7 +187,7 @@ public class CompanyManager {
     public void compareInvestor(List<CompanyInvestor> local, List<CompanyInvestor> api, List<String> showDiff, String companyId){
         if(local!=null&&api!=null){
             if(local.size()!=api.size()){
-                showDiff.add("companyID:"+companyId+",column:companyInvestorListAll"+",size不同,local:"+local.size()+",api:"+api.size());
+                showDiff.add("companyInvestorListAll中,size不同,local:"+local.size()+",api:"+api.size());
             }else {
                 Map<String,CompanyInvestor>  apiMap=new HashMap<String, CompanyInvestor>();
                 //将list中元素根据name，存放到Map，方便进行对比
@@ -177,7 +199,7 @@ public class CompanyManager {
                     CompanyInvestor ltmp=local.get(j);
                     String lname=ltmp.getName();
                     if(lname==null){
-                        showDiff.add("companyID:"+companyId+",column:companyInvestorListAll中name为空,local:"+ltmp.toString());
+                        showDiff.add("companyInvestorListAll中name为空,local:"+ltmp.toString());
                     }else {
                         CompanyInvestor atmp = apiMap.get(lname);
                         if (ltmp != null && atmp != null) {
@@ -186,7 +208,7 @@ public class CompanyManager {
                                 showDiff.add(res);
                             }
                         } else {
-                            showDiff.add("companyID:" + companyId + ",column:companyInvestorListAll中name" + ",值不同,local:" + ltmp.toString() + ",api:" + null);
+                            showDiff.add("companyInvestorListAll中name" + ",值不同,local:" + ltmp.toString() + ",api:" + null);
                         }
                     }
                 }
@@ -194,7 +216,7 @@ public class CompanyManager {
         }else if(local==null&&api==null){
 
         }else{
-            showDiff.add("companyID:"+companyId+",column:companyInvestorListAll null值,local:"+local+",api:"+api);
+            showDiff.add("companyInvestorListAll null值,local:"+local+",api:"+api);
         }
     }
 
@@ -202,7 +224,7 @@ public class CompanyManager {
     private void compareCompanyStaff(List<CompanyStaff> local, List<CompanyStaff> api, List<String> showDiff, String companyId) {
         if(local!=null&&api!=null){
             if(local.size()!=api.size()){
-                showDiff.add("companyID:"+companyId+",column:companyStaff"+",size不同,local:"+local.size()+",api:"+api.size());
+                showDiff.add("companyStaff中,size不同,local:"+local.size()+",api:"+api.size());
             }else {
                 Map<String,CompanyStaff>  apiMap=new HashMap<String, CompanyStaff>();
                 //将list中元素根据name，存放到Map，方便进行对比
@@ -214,7 +236,7 @@ public class CompanyManager {
                     CompanyStaff ltmp=local.get(j);
                     String lname=ltmp.getName();
                     if(lname==null){
-                        showDiff.add("companyID:"+companyId+",column:companyStaff,local:"+ltmp.toString());
+                        showDiff.add("companyStaff中,local:"+ltmp.toString());
                     }else {
                         CompanyStaff atmp = apiMap.get(lname);
                         if (ltmp != null && atmp != null) {
@@ -223,7 +245,7 @@ public class CompanyManager {
                                 showDiff.add(res);
                             }
                         } else {
-                            showDiff.add("companyID:" + companyId + ",column:companyStaff中name" + ",值不同,local:" + ltmp.toString() + ",api:" + null);
+                            showDiff.add("companyStaff中name" + ",值不同,local:" + ltmp.toString() + ",api:" + null);
                         }
                     }
                 }
@@ -234,13 +256,13 @@ public class CompanyManager {
     private void compareCompanyChange(List<CompanyChange> local, List<CompanyChange> api, List<String> showDiff, String companyId) {
         if(local!=null&&api!=null){
             if(local.size()!=api.size()){
-                showDiff.add("companyID:"+companyId+",column:companyChange"+",size不同,local:"+local.size()+",api:"+api.size());
+                showDiff.add("companyChange中,size不同,local:"+local.size()+",api:"+api.size());
             }else {
                 Map<String,CompanyChange>  apiMap=new HashMap<String, CompanyChange>();
                 for(int i=0;i<api.size();i++){
                     CompanyChange tmp=api.get(i);
                     if(tmp.getId()==null||"".equals(tmp.getId())){
-                        showDiff.add("companyID:"+companyId+",column:companyChange,id为null,api:"+tmp.toString());
+                        showDiff.add("companyChange中,id为null,api:"+tmp.toString());
                     }
                     apiMap.put(tmp.getId(),tmp);
                 }
@@ -254,7 +276,7 @@ public class CompanyManager {
                                 showDiff.add(res);
                             }
                         } else {
-                            showDiff.add("companyID:" + companyId + ",column:companyChange，id,值不同,local:" + ltmp.toString() + ",api:" + null);
+                            showDiff.add("companyChange中,id值不同,local:" + ltmp.toString() + ",api:" + null);
                         }
                     }
                 }
@@ -265,13 +287,13 @@ public class CompanyManager {
     private void compareCompanyAbnormal(List<CompanyAbnormal> local, List<CompanyAbnormal> api, List<String> showDiff, String companyId) {
     if(local!=null&&api!=null){
         if(local.size()!=api.size()){
-            showDiff.add("companyID:"+companyId+",column:companyAbnormal"+",size不同,local:"+local.size()+",api:"+api.size());
+            showDiff.add("companyAbnormal中,size不同,local:"+local.size()+",api:"+api.size());
         }else {
             Map<String,CompanyAbnormal>  apiMap=new HashMap<String, CompanyAbnormal>();
             for(int i=0;i<api.size();i++){
                 CompanyAbnormal tmp=api.get(i);
                 if(tmp.getId()==null){
-                    showDiff.add("companyID:"+companyId+",column:companyAbnormal,id为null,api:"+tmp.toString());
+                    showDiff.add("companyAbnormal中,id为null,api:"+tmp.toString());
                 }
                 apiMap.put(tmp.getId(),tmp);
             }
@@ -280,7 +302,7 @@ public class CompanyManager {
                 CompanyAbnormal ltmp=local.get(j);
                 String id=ltmp.getId();
                 if(id==null){
-                    showDiff.add("companyID:"+companyId+",column:companyAbnormal,id 为null,local:"+ltmp.toString());
+                    showDiff.add("companyAbnormal中,id 为null,local:"+ltmp.toString());
                 }else {
                     CompanyAbnormal atmp = apiMap.get(id);
                     if (ltmp != null && atmp != null) {
@@ -289,22 +311,20 @@ public class CompanyManager {
                             showDiff.add(res);
                         }
                     } else {
-                        showDiff.add("companyID:" + companyId + ",column:companyAbnormal中putDepartment和putDate" + ",值不同,local:" + ltmp.toString() + ",api:" + null);
+                        showDiff.add("companyAbnormal中,putDepartment和putDate" + ",值不同,local:" + ltmp.toString() + ",api:" + null);
                     }
                 }
             }
         }
     }
 }
-    public void showDiffInfo(){
-        if(this.diffInfo!=null){
-            for(int i=0;i<diffInfo.size();i++){
-                if(!"".equals(diffInfo.get(i))) {
-                    System.out.println(diffInfo.get(i));
-                }
+    public void showDiffInfo(CompareResModel diffModel){
+        List<String> diffInfo = diffModel.getPerLine();
+        for(int i=0;i<diffInfo.size();i++){
+            if(!"".equals(diffInfo.get(i))) {
+                System.out.println(diffInfo.get(i));
             }
         }
     }
-
 
 }

@@ -22,24 +22,24 @@ public class CompanyAbnormal {
     public String compareAbnormal(CompanyAbnormal cmp){
         StringBuilder sb =new StringBuilder("");
         if(!CompareTools.compareModelStrTime(this.putDate,cmp.putDate)){
-            sb.append("companyAbnormalInfoList中,companyId"+this.companyId+"putDate不一致：local"+this.putDate+",api:"+cmp.putDate+"\r\n");
+            sb.append("companyAbnormalInfoList中,companyId"+this.companyId+"putDate不一致：local"+this.putDate+",api:"+cmp.putDate);
         }
         if(!CompareTools.compareStringEqual(this.putReason,cmp.putReason)){
-            sb.append("companyAbnormalInfoList 中,companyId"+this.companyId+"putReason不一致：local"+this.putReason+",api:"+cmp.putReason+"\r\n");
+            sb.append("companyAbnormalInfoList 中,companyId"+this.companyId+"putReason不一致：local"+this.putReason+",api:"+cmp.putReason);
         }
         if(!CompareTools.compareStringEqual(this.putDepartment,cmp.putDepartment)){
-            sb.append("companyAbnormalInfoList 中,companyId"+this.companyId+"putDepartment不一致：local"+this.putDepartment+",api:"+cmp.putDepartment+"\r\n");
+            sb.append("companyAbnormalInfoList 中,companyId"+this.companyId+"putDepartment不一致：local"+this.putDepartment+",api:"+cmp.putDepartment);
         }
         if(!CompareTools.compareModelStrTime(this.removeDate,cmp.removeDate)){
-            sb.append("companyAbnormalInfoList中,companyId"+this.companyId+"removeDate不一致：local"+this.removeDate+",api:"+cmp.removeDate+"\r\n");
+            sb.append("companyAbnormalInfoList中,companyId"+this.companyId+"removeDate不一致：local"+this.removeDate+",api:"+cmp.removeDate);
         }
         if(!CompareTools.compareStringEqual(this.removeReason,cmp.removeReason)){
-            sb.append("companyAbnormalInfoList 中,companyId"+this.companyId+"removeReason不一致：local"+this.removeReason+",api:"+cmp.removeReason+"\r\n");
+            sb.append("companyAbnormalInfoList 中,companyId"+this.companyId+"removeReason不一致：local"+this.removeReason+",api:"+cmp.removeReason);
         }
         if(!CompareTools.compareStringEqual(this.removeDepartment,cmp.removeDepartment)){
-            sb.append("companyAbnormalInfoList 中,companyId"+this.companyId+"removeDepartment不一致：local"+this.removeDepartment+",api:"+cmp.removeDepartment+"\r\n");
+            sb.append("companyAbnormalInfoList 中,companyId"+this.companyId+"removeDepartment不一致：local"+this.removeDepartment+",api:"+cmp.removeDepartment);
         }
-        return sb.toString();
+        return sb.toString().replaceAll("(?m)^\\s*$(\\n|\\r\\n)", "");
     }
 
     @Override

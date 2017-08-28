@@ -16,12 +16,12 @@ public class CompanyInvestor {
     public String compareData(CompanyInvestor cmp){
         StringBuilder sb=new StringBuilder();
         if(!CompareTools.compareModelNumEqual(this.getAmount(),cmp.getAmount())){
-            sb.append("companyInvestor,amount值不同,id:"+this.id+",name:"+this.name+",local:"+this.getAmount()+"对比值："+cmp.getAmount()+"\r\n");
+            sb.append("companyInvestor中,amount值不同,id:"+this.id+",name:"+this.name+",local:"+this.getAmount()+"对比值："+cmp.getAmount());
         }
         if(!CompareTools.compareStringEqual(this.name,cmp.name)){
-            sb.append("companyInvestor,值不同,id:"+this.id+",name:"+this.name+",local:"+this.name+"对比值："+cmp.name+"\r\n");
+            sb.append("companyInvestor中,值不同,id:"+this.id+",name:"+this.name+",local:"+this.name+"对比值："+cmp.name);
         }
-        return sb.toString();
+        return sb.toString().replaceAll("(?m)^\\s*$(\\n|\\r\\n)", "");
     }
 
     @Override
