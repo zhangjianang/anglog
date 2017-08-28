@@ -2,31 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae996fd6-b0c9-4e56-8ddd-a35c9a5127b4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/tycModel/CompareResModel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/ids_final_single.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/insertRds/InsertRdsTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/tianyc/Tools/CompareToolsTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/tianyc/tycModel/CompanyManagerTest.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/DBUtilsbak.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/ang/anglog/AngLog.class" afterPath="$PROJECT_DIR$/target/classes/com/ang/anglog/AngLog.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/anglog.iml" afterPath="$PROJECT_DIR$/anglog.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ang/anglog/AngLog.java" afterPath="$PROJECT_DIR$/src/main/java/com/ang/anglog/AngLog.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/SearchDetailInfo.java" afterPath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/SearchDetailInfo.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/Tools/DBUtils.java" afterPath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/Tools/DBUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/insertrds/InsertRds.java" afterPath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/insertrds/InsertRds.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/insertrds/RdsDao.java" afterPath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/insertrds/RdsDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/tycModel/CompanyManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/tycModel/CompanyManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/tycModel/company/CompanyAbnormal.java" afterPath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/tycModel/company/CompanyAbnormal.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/tycModel/company/CompanyChange.java" afterPath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/tycModel/company/CompanyChange.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/tycModel/company/CompanyInvestor.java" afterPath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/tycModel/company/CompanyInvestor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/tycModel/company/CompanyStaff.java" afterPath="$PROJECT_DIR$/src/main/java/com/ang/anglog/tianyc/tycModel/company/CompanyStaff.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/20170612_ids_final_part.txt" afterPath="$PROJECT_DIR$/src/main/resources/20170612_ids_final_part.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/compareNum.properties" afterPath="$PROJECT_DIR$/src/main/resources/compareNum.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/log4j.properties" afterPath="$PROJECT_DIR$/src/main/resources/log4j.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/splitdb.properties" afterPath="$PROJECT_DIR$/src/main/resources/splitdb.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/log4j.properties" afterPath="$PROJECT_DIR$/target/classes/log4j.properties" />
     </list>
     <ignored path="anglog.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -1392,7 +1369,7 @@
       <workItem from="1503051186258" duration="12312000" />
       <workItem from="1503309723363" duration="33714000" />
       <workItem from="1503572129395" duration="15000" />
-      <workItem from="1503898719179" duration="77000" />
+      <workItem from="1503898719179" duration="397000" />
     </task>
     <servers />
   </component>
@@ -1429,7 +1406,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48034000" />
+    <option name="totallyTimeSpent" value="48354000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
