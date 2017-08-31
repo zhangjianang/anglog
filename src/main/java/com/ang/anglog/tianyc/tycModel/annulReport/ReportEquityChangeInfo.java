@@ -40,4 +40,14 @@ public class ReportEquityChangeInfo {
     public void setRatioBefore(String ratioBefore) {
         this.ratioBefore = ratioBefore;
     }
+
+    @Override
+    public String toString() {
+        return "ReportEquityChangeInfo{" +
+                "changeTime='" + changeTime + '\'' +
+                ", investorName='" + investorName + '\'' +
+                ", ratioAfter='" + ratioAfter + '\'' +
+                ", ratioBefore='" + ratioBefore + '\'' +
+                '}';
+    }
 }

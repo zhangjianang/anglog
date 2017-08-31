@@ -46,7 +46,7 @@ public class CompanyManager {
         TreeSet<Integer> reset= RandomCheck.setDataset(maxLine,compareNum);
         //根据行号，得到companyId
         List companyIds=RandomCheck.readFromFile(filePath,reset);
-        if(companyIds==null){
+        if(companyIds==null||"".equals(companyIds)){
             System.out.println("读取companyID文件结果为null");
             return false;
         }
@@ -58,6 +58,10 @@ public class CompanyManager {
         for(int i=0;i<companyIds.size();i++){
             CompareResModel diffModel = new CompareResModel();
             String companyId=companyIds.get(i).toString();
+
+            if(companyId.equals("100412716")){
+                System.out.println();
+            }
 
 //            System.out.println("比较第"+i+"条,comanyId:"+companyId);
             diffModel.setTitle("比较第"+i+"条,comanyId:"+companyId);
@@ -97,6 +101,7 @@ public class CompanyManager {
             Gson gson = new Gson();
             java.lang.reflect.Type companyType = new TypeToken<Company>() {}.getType();
             System.out.println("local结果:"+result);
+
             local = gson.fromJson(result, companyType);
         }else{
             local=null;
@@ -105,14 +110,18 @@ public class CompanyManager {
 
     public void initAllByCompanyId(String companyId,CompareResModel diffModel){
        SearchDetailInfo searchDetailInfo=new SearchDetailInfo(0);
-       Map<String,Object> local = searchDetailInfo.getSplitDetailInfoByCompanyId(companyId);
-        initLocalData(local);
-        if(local!=null) {
-            Object name = local.get("name");
+       Map<String,Object> ilocal = searchDetailInfo.getSplitDetailInfoByCompanyId(companyId);
+        initLocalData(ilocal);
+        if(ilocal!=null) {
+            Object name = ilocal.get("name");
             if(name!=null){
                 initApiDataByName(name.toString());
+                String title = diffModel.getTitle();
+                title+=",companyName:"+name.toString();
+                diffModel.setTitle(title);
             }
         }
+
     }
 
     public void compareTwoByCompanyId(String companyId,CompareResModel diffModel){
@@ -158,16 +167,7 @@ public class CompanyManager {
             if(!CompareTools.compareStringEqual(local.getIndustry(),api.getIndustry())){
                 diffInfo.add("industry值不同,local:"+local.getIndustry()+",api:"+api.getIndustry());
             }
-            if(local.getAnnualReportList()!=null && api.getAnnualReportList()!=null) {
-                if (local.getAnnualReportList().size() != api.getAnnualReportList().size()) {
-                    diffInfo.add("annualReport 值不同");
-                }
-            }else if(local.getAnnualReportList()==null&&api.getAnnualReportList()==null){
-
-            }else {
-                if(local.getAnnualReportList()==null&&api.getAnnualReportList()!=null&&api.getAnnualReportList().size()==0){}
-                diffInfo.add("annualReport 值不同，local:"+local.getAnnualReportList()+",api:"+api.getAnnualReportList());
-            }
+            compareAnnualReport(local,api,diffInfo);
             //对比company相关List
             compareInvestor(local.getInvestorListAll(),api.getInvestorListAll(),diffInfo,companyId);
             compareCompanyStaff(local.getStaffListAll(),api.getStaffListAll(),diffInfo,companyId);
@@ -180,6 +180,38 @@ public class CompanyManager {
             diffInfo.add("api中result值为null");
         }
 //        showDiffInfo(diffModel);
+        diffModel.setPerLine(diffInfo);
+    }
+
+    public void compareAnnualReport(Company local,Company api,List<String> diffInfo){
+        if(local.getAnnualReportList()!=null && api.getAnnualReportList()!=null) {
+            if (local.getAnnualReportList().size() != api.getAnnualReportList().size()) {
+                diffInfo.add("annualReport 条数不同,本地为："+local.getAnnualReportList().size()+",api为："+api.getAnnualReportList().size());
+            }else{
+                List<AnnualReport> localAnnualReportList = local.getAnnualReportList();
+                List<AnnualReport> apiAnnualReportList = api.getAnnualReportList();
+                for(AnnualReport perlocal:localAnnualReportList){
+                    String reportYear = perlocal.getBaseInfo().getReportYear();
+                    String lcompanyName = perlocal.getBaseInfo().getCompanyName();
+                    for(AnnualReport perApi : apiAnnualReportList){
+                        if(perApi.getBaseInfo().getReportYear().equals(reportYear)&& perApi.getBaseInfo().getCompanyName().equals(lcompanyName)){
+                            String res = perlocal.compareData(perApi);
+                            if(res.length()>0){
+                                diffInfo.add(res);
+                            }
+                        }
+                    }
+                }
+            }
+        }else if(local.getAnnualReportList()==null&&api.getAnnualReportList()==null){
+
+        }else {
+            if(local.getAnnualReportList()==null&&api.getAnnualReportList().size()==0){
+                logger.info("annualReport值存在差异，本地null，api中[]");
+            }else {
+                diffInfo.add("annualReport 值不同，local:" + local.getAnnualReportList() + ",api:" + api.getAnnualReportList());
+            }
+        }
     }
 
 

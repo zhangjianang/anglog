@@ -3,8 +3,10 @@ package tianyc.tycModel;
 import com.ang.anglog.tianyc.SearchDetailInfo;
 import com.ang.anglog.tianyc.Tools.ReadPropertyTool;
 import com.ang.anglog.tianyc.Tools.StringUtil;
+import com.ang.anglog.tianyc.insertrds.MD5;
 import com.ang.anglog.tianyc.randomCheck.RandomCheck;
 import com.ang.anglog.tianyc.tycModel.CompanyManager;
+import com.ang.anglog.tianyc.tycModel.CompareResModel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,6 +49,7 @@ public class CompanyManagerTest {
     @Test
     public void initApiDataByName() throws Exception {
 //        companyManager.initApiDataByName("钦州市钦州港新茂科技有限责任公司");
+        System.out.println(MD5.MD5_32bit("北京千羽寻一商贸有限公司"));
     }
 
     @Test
@@ -87,10 +90,17 @@ public class CompanyManagerTest {
 
 //        companyManager.compareTwoByCompanyId("8230846");
     }
+    @Test
+    public void compareAnnualReport(){
+        CompareResModel df = new CompareResModel();
+        companyManager.compareTwoByCompanyId("34288995",df);
+        System.out.println(df.toString());
+    }
 
     @Test
     public void compareCompanyAbnormal(){
-//        companyManager.compareTwoByCompanyId("11302687");
-//        companyManager.compareTwoByCompanyId("16253287");
+        CompareResModel df = new CompareResModel();
+        companyManager.compareTwoByCompanyId("11302687",df);
+        companyManager.compareTwoByCompanyId("16253287",df);
     }
 }

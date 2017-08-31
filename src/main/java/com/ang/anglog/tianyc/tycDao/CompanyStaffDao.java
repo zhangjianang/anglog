@@ -24,7 +24,7 @@ public class CompanyStaffDao {
     public List<Map<String,Object>> getCompanyStaffByCompanyId(String companyId){
         List<Map<String,Object>> res=null;
         if(companyId!=null&& StringUtil.isNotEmpty(companyId)){
-            String sql="select company_id,human.id,name,type,staff_type_name from company_staff left join human on company_staff.staff_id = human.id where company_id = ?";
+            String sql="select company_id,human.id,human.name,human.type,staff_type_name from company_staff left join human on company_staff.staff_id = human.id where company_id = ?";
             res= dbUtils.query(sql,companyId);
             return convertCompanyStaffData(res);
         }

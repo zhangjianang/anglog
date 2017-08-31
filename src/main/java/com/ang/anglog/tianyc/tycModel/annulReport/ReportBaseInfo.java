@@ -175,4 +175,29 @@ public class ReportBaseInfo {
     public void setTotalTax(String totalTax) {
         this.totalTax = totalTax;
     }
+
+    @Override
+    public String toString() {
+        return "ReportBaseInfo{" +
+                "companyName='" + companyName + '\'' +
+                ", creditCode='" + creditCode + '\'' +
+                ", email='" + email + '\'' +
+                ", employeeNum='" + employeeNum + '\'' +
+                ", manageState='" + manageState + '\'' +
+                ", operatorName='" + operatorName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", postalAddress='" + postalAddress + '\'' +
+                ", postcode='" + postcode + '\'' +
+                ", primeBusProfit='" + primeBusProfit + '\'' +
+                ", regNumber='" + regNumber + '\'' +
+                ", reportYear='" + reportYear + '\'' +
+                ", retainedProfit='" + retainedProfit + '\'' +
+                ", totalAssets='" + totalAssets + '\'' +
+                ", totalEquity='" + totalEquity + '\'' +
+                ", totalLiability='" + totalLiability + '\'' +
+                ", totalProfit='" + totalProfit + '\'' +
+                ", totalSales='" + totalSales + '\'' +
+                ", totalTax='" + totalTax + '\'' +
+                '}';
+    }
 }

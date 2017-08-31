@@ -63,6 +63,9 @@ public class SearchDetailInfo {
         }
         if(companyId!=null&&!"".equals(companyId)) {
             Long clong = Long.parseLong(companyId);
+            if(clong<0){
+                return "0";
+            }
             String no = String.valueOf(clong % lno);
             return no;
         }
@@ -75,6 +78,10 @@ public class SearchDetailInfo {
     /*根据companyId取*/
     private Boolean initByDaoByCompanyId(String companyId){
         //确定取膜数量
+        if("".equals(companyId)){
+            logger.warn("传入companyId为空!!");
+            return  false;
+        }
         String no=getModeRes(companyId);
         if(!"".equals(no)) {
             companyDao = new CompanyDao(no, false);
@@ -91,7 +98,7 @@ public class SearchDetailInfo {
             return true;
         }else{
             //如果为空，就设置为默认连接
-            logger.error("根据id取模失败!!");
+            logger.warn("根据id取模失败!!");
             return false;
         }
     }

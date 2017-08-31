@@ -32,4 +32,13 @@ public class ReportOutBoundInvestment {
     }
 
     private String regNum;
+
+    @Override
+    public String toString() {
+        return "ReportOutBoundInvestment{" +
+                "creditCode='" + creditCode + '\'' +
+                ", outcompanyName='" + outcompanyName + '\'' +
+                ", regNum='" + regNum + '\'' +
+                '}';
+    }
 }

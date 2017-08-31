@@ -67,4 +67,17 @@ public class ReportShareHolder {
     public void setSubscribeType(String subscribeType) {
         this.subscribeType = subscribeType;
     }
+
+    @Override
+    public String toString() {
+        return "ReportShareHolder{" +
+                "investorName='" + investorName + '\'' +
+                ", paidAmount='" + paidAmount + '\'' +
+                ", paidTime='" + paidTime + '\'' +
+                ", paidType='" + paidType + '\'' +
+                ", subscribeAmount='" + subscribeAmount + '\'' +
+                ", subscribeTime='" + subscribeTime + '\'' +
+                ", subscribeType='" + subscribeType + '\'' +
+                '}';
+    }
 }

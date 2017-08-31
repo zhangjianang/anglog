@@ -76,4 +76,18 @@ public class ReportOutGuaranteeInfo {
     public void setObligor(String obligor) {
         this.obligor = obligor;
     }
+
+    @Override
+    public String toString() {
+        return "ReportOutGuaranteeInfo{" +
+                "creditoAmount='" + creditoAmount + '\'' +
+                ", creditor='" + creditor + '\'' +
+                ", creditoTerm='" + creditoTerm + '\'' +
+                ", creditoType='" + creditoType + '\'' +
+                ", guaranteeScope='" + guaranteeScope + '\'' +
+                ", guaranteeTerm='" + guaranteeTerm + '\'' +
+                ", guaranteeWay='" + guaranteeWay + '\'' +
+                ", obligor='" + obligor + '\'' +
+                '}';
+    }
 }

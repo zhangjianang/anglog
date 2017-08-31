@@ -27,7 +27,13 @@ public class CompareResModel {
     }
 
     public void setPerLine(List<String> perLine) {
-        this.perLine = perLine;
+        List<String> resPer= new ArrayList<String>();
+        for(String line:perLine){
+            if(!"".equals(line)&&line.length()>1){
+                resPer.add(line);
+            }
+        }
+        this.perLine = resPer;
     }
 
     public boolean isEqual() {
@@ -57,13 +63,11 @@ public class CompareResModel {
     @Override
     public String toString() {
         String perStr = showPerLine();
-        return
-                "{"+title + "\n" +
-                "相等=" + isEqual +'\n'+
-                "apiData=" + apiData + '\n' +
-                "localData=" + localData + '\n' +
-                perStr+
-                '}'+"\n";
+
+            return  "{" + title + "\n" +
+                            "相等=" + isEqual + '\n' +
+                            perStr +
+                            '}' + "\n";
     }
 
     public String showPerLine(){

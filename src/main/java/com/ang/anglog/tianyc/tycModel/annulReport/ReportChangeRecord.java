@@ -40,4 +40,14 @@ public class ReportChangeRecord {
     public void setContentBefore(String contentBefore) {
         this.contentBefore = contentBefore;
     }
+
+    @Override
+    public String toString() {
+        return "ReportChangeRecord{" +
+                "changeItem='" + changeItem + '\'' +
+                ", changeTime='" + changeTime + '\'' +
+                ", contentAfter='" + contentAfter + '\'' +
+                ", contentBefore='" + contentBefore + '\'' +
+                '}';
+    }
 }

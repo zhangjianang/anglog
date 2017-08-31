@@ -99,6 +99,8 @@ public class CompareTools {
             }
         }else if(olocal==null&&oapi==null){
             return true;
+        }else  if(olocal==null&&"".equals(oapi) ||"".equals(olocal)&&oapi==null){
+            return true;
         }
         return  false;
     }

@@ -32,4 +32,13 @@ public class ReportWebInfo {
 
     private String website;
     private String webType;
+
+    @Override
+    public String toString() {
+        return "ReportWebInfo{" +
+                "name='" + name + '\'' +
+                ", website='" + website + '\'' +
+                ", webType='" + webType + '\'' +
+                '}';
+    }
 }
