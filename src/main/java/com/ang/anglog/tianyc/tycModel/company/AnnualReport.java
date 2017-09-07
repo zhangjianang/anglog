@@ -46,7 +46,7 @@ public class AnnualReport {
                 }
             }
         }else {
-            if(webInfoList==null&&inAnnual.webInfoList.size()==0||webInfoList.size()==0&&inAnnual.webInfoList==null){
+            if(webInfoList==null&&inAnnual.webInfoList==null||webInfoList==null&&inAnnual.webInfoList.size()==0||inAnnual.webInfoList==null&&webInfoList.size()==0){
 
             }else {
                 sb.append("annualReport中webInfoList数据不相等,本地为：" + webInfoList + ",api为：" + inAnnual.webInfoList);

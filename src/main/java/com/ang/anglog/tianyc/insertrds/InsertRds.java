@@ -12,8 +12,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by adimn on 2017/6/16.
@@ -24,6 +23,7 @@ public class InsertRds {
     private static SearchDetailInfo searchDetailInfo=new SearchDetailInfo(1);
     private  static RdsDao rdsDao=new RdsDao();
     private static Map<String,String> wrongMap = new HashMap();
+    private static List<String> wrongIds= new ArrayList<String>();
 
     public static void main(String[] args){
         String filename=args[0];
@@ -64,9 +64,9 @@ public class InsertRds {
             if(res==null){
                 logger.warn("处理id :"+companyId+"组装失败，result为null！！");
                 wrongMap.put(companyId,"result为null");
+                wrongIds.add(companyId+"\r\n");
                 return 0;
-            }
-            if(res.get("name")!=null){
+            }else if(res.get("name")!=null){
                 String name = res.get("name").toString();
 
                 String jres=JSONObject.toJSONString(res);
@@ -79,8 +79,9 @@ public class InsertRds {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.warn(" 处理id :"+companyId+"失败，转json出错");
+            logger.warn(" 处理id :"+companyId+"失败，转json出错"+res);
             wrongMap.put(companyId,"转json出错");
+            wrongIds.add(companyId+"\r\n");
         }
         return 0;
     }
@@ -109,12 +110,13 @@ public class InsertRds {
 
             Map<String, String> returnMap = SqlMap.getSqlMap();
             if(returnMap!=null){
-                succline +=rdsDao.insertBachIntoRds(returnMap);
+                int inNum = rdsDao.insertBachIntoRds(returnMap);
+                succline +=inNum;
             }
             reader.close();
             logger.info("读取结束，拼装插入处理完成! 读取条数："+countline+",执行成功："+succline);
             if(wrongMap.size()>0){
-                logger.error("读取结束，拼装插入处理完成! 读取条数："+countline+",执行成功："+succline+",失败条数："+wrongMap.size()+",错误id信息为："+wrongMap.toString());
+                logger.error(new Date().getDate()+"更新拼接操作\r\n读取结束，拼装插入处理完成! 读取条数："+countline+",执行成功："+succline+",失败条数："+wrongMap.size()+",错误信息为："+wrongMap.toString()+",id为："+wrongIds.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();

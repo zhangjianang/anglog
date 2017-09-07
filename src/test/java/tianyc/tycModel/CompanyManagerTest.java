@@ -49,7 +49,7 @@ public class CompanyManagerTest {
     @Test
     public void initApiDataByName() throws Exception {
 //        companyManager.initApiDataByName("钦州市钦州港新茂科技有限责任公司");
-        System.out.println(MD5.MD5_32bit("北京千羽寻一商贸有限公司"));
+        System.out.println(MD5.MD5_32bit("北京中科电商谷投资有限公司"));
     }
 
     @Test

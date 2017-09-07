@@ -20,8 +20,8 @@ public class RdsDao {
 
     public String  insertIntoRds(String companyName,String detail){
         if(companyName!=null&& StringUtil.isNotEmpty(companyName)){
-            String sql = "replace into companyinfo (name,json) values( ? ,? )";
-//            String sql = "replace into companyinfo_test (name,json) values( ? ,? )";
+//            String sql = "replace into companyinfo (name,json) values( ? ,? )";
+            String sql = "replace into companyinfo_test (name,json) values( ? ,? )";
             String res = null;
 
             res = dbUtils.insert(0,sql,new Object[]{companyName,detail});

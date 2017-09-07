@@ -59,10 +59,12 @@ public class CompanyInvestorDao {
                     String no = getModeRes(investor_company_id);
                     CompanyDao company = new CompanyDao(no,false);
                     Map<String, Object> companyInfo = company.getCompanyInfo(investor_company_id);
-                    conMap.put("name",companyInfo.get("name"));
-                    conMap.put("base",companyInfo.get("base"));
-                    conMap.put("regStatus",companyInfo.get("regStatus"));
-                    conMap.put("legalPersonName",companyInfo.get("legalPersonName"));
+                    if(companyInfo!=null) {
+                        conMap.put("name", companyInfo.get("name"));
+                        conMap.put("base", companyInfo.get("base"));
+                        conMap.put("regStatus", companyInfo.get("regStatus"));
+                        conMap.put("legalPersonName", companyInfo.get("legalPersonName"));
+                    }
                 }
                 lres.add(conMap);
             }

@@ -212,6 +212,7 @@ public class DBUtils {
         List<Map<String, Object>> lres=null;
         String json=null;
         int res = 0;
+        int wrong =0;
         try {
             if(num==0) {
                 connection = insertDataSource.getConnection();
@@ -230,9 +231,14 @@ public class DBUtils {
                 }
                 int[] ints = querySql.executeBatch();
                 for(int i=0;i<ints.length;i++) {
-                    if(ints[i]==1){
+                    if(ints[i]>0){
                         res++;
+                    }else {
+                        wrong++;
                     }
+                }
+                if(wrong>0) {
+                    logger.warn("insertFinalBatch中,影响条数为0：" + wrong);
                 }
             }
 
